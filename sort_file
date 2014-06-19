@@ -1,0 +1,52 @@
+def sort_file(save_dir, save_as):
+    #the tolerance for what is considered equivalent continuous parameters
+    rho_tol = 3.0; alpha_tol = 5000.0; sigma_tol = 2.0
+ 
+    #reads in full optimization data
+    f = open(save_dir + save_as)
+    data = []
+    for line in f:
+        data.append(line.split())
+    f.close()
+    #sorts data by score
+    ranked_data = sorted(data, key=lambda dataline: float(dataline[0]))
+    sorted_data = []; sorted_scores = []; sorted_stddev = []
+    while len(sorted_data) < 100:
+        #create rounded version of best ranked parameter set
+        candidate = []
+        junk = ranked_data[-1][4:]
+        holder = junk[0].split('[')
+        holder = holder[1].split(',')
+        candidate.append(int(holder[0]))
+        holder = junk[1].split(',')
+        candidate.append(int(holder[0]))
+        holder = junk[2].split(',')
+        candidate.append(round(float(holder[0])/rho_tol)*rho_tol)
+        #floor rho at 1.0
+        if candidate[-1] == 0:
+            candidate[-1] = 1
+        holder = junk[3].split(',')
+        candidate.append(round(float(holder[0])/alpha_tol)*alpha_tol)
+        #floor alpha at 1.0
+        if candidate[-1] == 0:
+            candidate[-1] = 1
+        holder = junk[4].split(',')
+        candidate.append(round(float(holder[0])/sigma_tol)*sigma_tol)
+        #floor sigma at 1.0
+        if candidate[-1] == 0:
+            candidate[-1] = 1
+        holder = junk[5].split(']')
+        candidate.append(int(holder[0]))
+        #add to sorted lists only if distinct from other parameters
+        if candidate not in sorted_data:
+            sorted_data.append(candidate)
+            sorted_scores.append(ranked_data[-1][0])
+            sorted_stddev.append(ranked_data[-1][2])
+        #remove this to check next best parameter set
+        ranked_data.pop()
+    #save sorted data
+    g = open(save_dir + save_as + '_sorted','w')
+    for k in range(len(sorted_data)):
+        g.write(sorted_scores[k] + ' score, ' + sorted_stddev[k] + \
+            ' stddev, ' + repr(sorted_data[k]) + '\n')
+    g.close()
