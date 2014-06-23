@@ -127,7 +127,7 @@ def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings):
     return nests, fitness 
   
 #The function that calls other functions for cuckoo search. 
-def cuckoo_search(Iterations, settings): 
+def cuckoo_search(Iterations, nest_number, settings): 
     import random 
     import math, multiprocessing 
     import os 
@@ -173,16 +173,6 @@ def cuckoo_search(Iterations, settings):
     nests[30] = [2,7,9,10000,1.5,12]
     nests[31] = [2,7,9,10000,1.5,30]
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
     #initiates number by parameters in the sort file 
     #Initates nest_number of solutions by randomly picking points in parameter space 
     #for i in range(nest_number): 
