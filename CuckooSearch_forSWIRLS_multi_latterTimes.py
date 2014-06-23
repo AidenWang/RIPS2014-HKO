@@ -33,7 +33,19 @@ def get_fitness(a_nest):
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
 def replace_nests(nests,new_nests,nest_number,nd,fitness,new_fitness): 
-    for i in range(nest_number): 
+  
+    for i in range(new_nest): 
+        mins[i] = fitness.index(min(fitness)) #if trying to find min, get rid of max
+        nest.pop([fitness.index(min(fitness))])
+        fitness.remove(min(fitness))
+    mergedFitness = mins + new_fitness
+    mergedFitness.sort()
+    mergedFitness.reverse()
+    for i in range(new_nest):
+        fitness.append(mergedFitness[i])
+    
+        
+    for i in range(new_nests): 
         if fitness[i] < new_fitness[i]: #the replacing is done if < since we are trying to maximize score 
             for j in range(nd): 
                 nests[i][j] = new_nests[i][j] 
@@ -88,10 +100,12 @@ def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings):
     #find the worst "frac" nests 
     mins = [0]*frac 
     mark = 0
-    temp_fit = fitness[:] 
+    #temp_fit = fitness[:] 
     for i in range(frac): 
-        mins[i] = fitness.index(min(temp_fit)) #if trying to find min, get rid of max 
-        temp_fit.remove(min(temp_fit)) 
+        mins[i] = fitness.index(min(fitness)) #if trying to find min, get rid of max 
+        fitness.remove(min(fitness))
+      
+    
     perm_nests1 = nests[:][:] 
     perm_nests2 = nests[:][:] 
     #mins is the indices of solutions in nests that we are going to replace 
