@@ -49,7 +49,7 @@ def get_cuckoo(nests, best_nest, Lb, Ub, nest_number,nd,stepsize, percentage):
     #Mantegna's Algorithm 
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
-    for i in range(int(nest_number*percentage)): 
+    for i in range(int(round(nest_number*percentage))): 
         temp = nests[i][:] 
         step = [0]*len(temp) 
         for j in range(len(temp)): 
