@@ -28,8 +28,8 @@ def get_fitness(a_nest):
         elif j == 5: 
             temp_nest[0][j] = int(round(temp_nest[0][j]/float(6))*6) 
     #Calls SWIRLS and scoring function 
-    dump = get_score.get_score(temp_nest) 
-    return dump 
+    a_nest[6] = get_score.get_score(temp_nest) 
+    return a_nest[6]
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
 def replace_nests(nests,new_nests,nest_number,nd,fitness,new_fitness): 
