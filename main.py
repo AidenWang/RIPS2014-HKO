@@ -47,7 +47,7 @@ if __name__ == "__main__":
     if average_type == 1: 
         #runs desired optimization function 
         if optimization_type == 1: 
-            dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings) 
+            dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, 32, settings) 
         if optimization_type == 2: 
             dump = psof.pso(iterations, solution_number, settings) 
         if optimization_type == 3: 
