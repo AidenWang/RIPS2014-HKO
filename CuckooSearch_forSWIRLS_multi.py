@@ -139,7 +139,7 @@ def cuckoo_search(Iterations, nest_number, settings):
     Ub = [7,7,24,50000,9,60,1]  #upper bound to search domain. Same dimension of solutions 
     stepsize = [1,1,0.75,0.75,0.75,1.5,0] #new addition 7/22 
     pa = 0.2 #the percent of nests(solutions) that are replaced per step 
-    nests = [[0 for i in range(6)] for i in range(32)]
+    nests = [[0 for i in range(7)] for i in range(32)]
     nests[0] = [1,7,9,2000,1.5,12,0]
     nests[1] = [1,7,9,2000,1.5,30,0]
     nests[2] = [1,7,9,2000,2.5,12,0]
