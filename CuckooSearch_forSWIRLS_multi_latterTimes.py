@@ -28,29 +28,18 @@ def get_fitness(a_nest):
         elif j == 5: 
             temp_nest[0][j] = int(round(temp_nest[0][j]/float(6))*6) 
     #Calls SWIRLS and scoring function 
-    dump = get_score.get_score(temp_nest) 
-    return dump 
+    a_nest[6] = get_score.get_score(temp_nest) 
+    return a_nest[6] 
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-def replace_nests(nests,new_nests,nest_number,nd,fitness,new_fitness): 
-  
+def replace_nests(nests,new_nests,nest_number,nd): 
+    from operator import itemgetter 
+    nests = nests + new_nests
+    sorted(nests, key = itemgetter(6), reverse = true)
     for i in range(new_nest): 
-        mins[i] = fitness.index(min(fitness)) #if trying to find min, get rid of max
-        nest.pop([fitness.index(min(fitness))])
-        fitness.remove(min(fitness))
-    mergedFitness = mins + new_fitness
-    mergedFitness.sort()
-    mergedFitness.reverse()
-    for i in range(new_nest):
-        fitness.append(mergedFitness[i])
-    
+        nests.pop()
         
-    for i in range(new_nests): 
-        if fitness[i] < new_fitness[i]: #the replacing is done if < since we are trying to maximize score 
-            for j in range(nd): 
-                nests[i][j] = new_nests[i][j] 
-            fitness[i] = new_fitness[i] 
-    return nests, fitness 
+    return nests
   
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
