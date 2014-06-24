@@ -32,7 +32,7 @@ def get_fitness(a_nest):
     return a_nest[6] 
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-def replace_nests(nests, new_nests, nest_number, nd): 
+def replace_nests(nests, new_nests): 
     from operator import itemgetter 
     nests = nests + new_nests
     sorted(nests, key = itemgetter(6), reverse = true)
@@ -163,42 +163,41 @@ def cuckoo_search(Iterations, nest_number, settings):
     #Opens parallel processing 
     N_inter = 0
     while N_inter < Iterations: 
+        replace_nests(nests, get_new_nest(nest, Lb, Ub, nest_number, stepsize))
       
       
-        
-      
-      
-        new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
-        N_inter = N_inter+1
+    #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
+    #    N_inter = N_inter+1
   
-        score_new_nests = [0]*nest_number 
-        for j in range(nest_number): 
-            score_new_nests[j] = add_settings(new_nests[j], settings) 
-        new_fitness = pool.map(get_fitness,score_new_nests) 
+  #      score_new_nests = [0]*nest_number 
+   #     for j in range(nest_number): 
+    
+    #        score_new_nests[j] = add_settings(new_nests[j], settings) 
+    #    new_fitness = pool.map(get_fitness,score_new_nests) 
           
-        data_dump = replace_nests(nests,new_nests,nest_number,nd,fitness,new_fitness) 
-        nests = data_dump[0] 
-        fitness = data_dump[1] 
+    #    data_dump = replace_nests(nests,new_nests,nest_number,nd,fitness,new_fitness) 
+    #    nests = data_dump[0] 
+    #    fitness = data_dump[1] 
           
         #and therefore should follow any new_nest function 
-        data_dump = empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings) 
-        nests = data_dump[0] 
-        fitness = data_dump[1] 
-        index = fitness.index(max(fitness)) 
-        best_nest = nests[index][:] 
-        best_nest_print = best_nest[:] 
+    #    data_dump = empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings) 
+    #    nests = data_dump[0] 
+    #    fitness = data_dump[1] 
+    #    index = fitness.index(max(fitness)) 
+    #    best_nest = nests[index][:] 
+    #    best_nest_print = best_nest[:] 
         
-        for j in range(nd): 
-            if j == 0 or j == 1: 
-                best_nest_print[j] = int(round(best_nest_print[j])) 
-            elif j == 5: 
-                best_nest_print[j] = int(round((best_nest_print[j]/6))*6) 
+    #    for j in range(nd): 
+    #        if j == 0 or j == 1: 
+    #            best_nest_print[j] = int(round(best_nest_print[j])) 
+    #        elif j == 5: 
+    #            best_nest_print[j] = int(round((best_nest_print[j]/6))*6) 
           
         #percent = float(N_inter)/Iterations 
         #print 'The Percent Done = ' + str(percent) 
         #int(N_inter) 
         #print 'The Best Solution is ' + str(best_nest_print) 
-    return best_nest[:] 
+    #return best_nest[:] 
 
 #The function that calls other functions for cuckoo search. 
 def initialize(Iterations, nest_number, settings): 
