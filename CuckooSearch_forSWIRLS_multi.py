@@ -267,7 +267,7 @@ def initialize(Iterations, nest_number, settings):
     #sends jobs to get_fitness in parallel 
     fitness = pool.map(get_fitness,score_nests) 
     
-    for i in range(fitness)
+    for i in range(nest_number)
         nests[i][6] = fitness[i]
       
     return nests
