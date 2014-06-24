@@ -1,5 +1,5 @@
 import os, datetime, time, sys, random
- 
+ #YOLO
 def get_forecast(intime, min_lvl, max_lvl, rho, alpha, sigma, interval, base_dir, save_dir):
     # Runs the integrated script for SWIRLS forecaset, converts to list
     timestr = str(intime)
