@@ -1,12 +1,10 @@
-def get_score(args):
+def get_score(params, settings):
     #Module for getting SWIRLS forecast and actual rainfall data
     import os, sys, get_data, moving_max, filter_peaks, score_forecast, numpy, math
  
     #SET WEIGHT SCHEME. 1=mix, 2=all peak, 3=all least-squares, 4=asymmetric Gaussain, 5=shifted Gaussian
     weight_scheme = 4
- 
-    #parses argument list
-    params = args[0]; settings = args[1]
+
     #seperates input tuning parameters
     start_lvl = params[0]; max_lvl = params[1]; rho = params[2]
     alpha = params[3]; sigma = params[4]; interval = params[5]
