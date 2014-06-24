@@ -32,7 +32,7 @@ def get_fitness(a_nest):
     return a_nest[6] 
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-def replace_nests(nests,new_nests,nest_number,nd): 
+def replace_nests(nests, new_nests, nest_number, nd): 
     from operator import itemgetter 
     nests = nests + new_nests
     sorted(nests, key = itemgetter(6), reverse = true)
@@ -43,14 +43,18 @@ def replace_nests(nests,new_nests,nest_number,nd):
     
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
-def get_cuckoo(nests, best_nest, Lb, Ub, nest_number,nd,stepsize, percentage): 
+def get_new_nests(nests, best_nest, Lb, Ub, nest_number, stepsize, percentage): 
     import math 
     import scipy.special 
     import random 
     #Mantegna's Algorithm 
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
-    for i in range(int(round(nest_number*percentage))): 
+    
+    random.shuffle(nests)
+    frac = range(int(round(nest_number*percentage)))
+    new_nests = [[0 for i in range(7)] in range(frac)]
+    for i in range(frac): 
         temp = nests[i][:] 
         step = [0]*len(temp) 
         for j in range(len(temp)): 
@@ -74,8 +78,8 @@ def get_cuckoo(nests, best_nest, Lb, Ub, nest_number,nd,stepsize, percentage):
                     temp[0] = round(random.uniform(Lb[0],temp[j]),3) 
                 else: 
                     temp[j] = round(random.uniform(temp[0],Ub[j]),3) 
-        nests[i][:] = temp 
-    return nests 
+        new_nests[i][:] = temp 
+    return new_nests 
   
 #Worst Fraction of solutions take another random step 
 def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings): 
@@ -157,9 +161,13 @@ def cuckoo_search(Iterations, nest_number, settings):
     #                a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
     #    nests[i] = a_nest 
     #Opens parallel processing 
-      
     N_inter = 0
-    while N_inter <= Iterations: 
+    while N_inter < Iterations: 
+      
+      
+        
+      
+      
         new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
         N_inter = N_inter+1
   
