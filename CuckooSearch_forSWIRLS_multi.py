@@ -21,7 +21,7 @@ def get_fitness(a_nest,settings):
     #Calls SWIRLS and scoring function 
     a_nest[6] = get_score.get_score(a_nest,settings) 
     print 'fitness of'
-    print a_nest(range(0,5))
+    print a_nest
     print 'is'
     print a_nest[6]
     return a_nest[6] 
