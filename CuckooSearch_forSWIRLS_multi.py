@@ -9,7 +9,6 @@ def num(s):
     except exceptions.ValueError: 
         return float(s) 
   
-  
 #input is a list of 6 parameters and outputs the fitness of the solution 
  
 def get_fitness(a_nest,settings): 
@@ -24,7 +23,7 @@ def get_fitness(a_nest,settings):
     print a_nest
     print 'is'
     print a_nest[6]
-    return a_nest[6] 
+    return a_nest[6]
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
 def replace_nests(nests, new_nests): 
@@ -255,14 +254,14 @@ def initialize(Iterations, nest_number, settings):
     #                a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
     #    nests[i] = a_nest 
     #Opens parallel processing 
+    #Opens parallel processing 
     pool = multiprocessing.Pool() 
     score_nests = [0]*nest_number 
-    for j in range(nest_number): 
-        score_nests[j] = add_settings(nests[j],settings) 
-    #sends jobs to get_fitness in parallel 
-    fitness = pool.map(get_fitness,score_nests) 
-    
-    for i in range(nest_number)
-        nests[i][6] = fitness[i]
-      
+    #sends jobs to get_fitness in parallel
+    #fitness = pool.map(get_fitness,score_nests) 
+    #I don't know multi-processing, please help if you have any idea ----Aiden
+
+    for i in range(nest_number):
+        get_fitness(nests[i],settings)
+        
     return nests
