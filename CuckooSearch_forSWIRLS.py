@@ -1,6 +1,6 @@
 #!C:\Python27\ScriptDump 
 #Cuckoo Search Algorithm 
-  
+  #kjdhgdksdjkjasdkfjsfdlk#
 #insert SWIRLS program here (input 6 parameters) that outputs a score. just a number 
   
 def get_fitness(a_nest,nd,i,fitness): # need to change this for the case of more than 2 components in solutions 
