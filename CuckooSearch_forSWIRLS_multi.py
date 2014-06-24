@@ -9,26 +9,21 @@ def num(s):
     except exceptions.ValueError: 
         return float(s) 
   
-#Append list of variables that need to get passed for parallel processing 
-def add_settings(a_nest, settings): 
-    temp_nest = [0]*2
-    temp_nest[0] = a_nest 
-    temp_nest[1] = settings 
-    return temp_nest 
   
 #input is a list of 6 parameters and outputs the fitness of the solution 
-def get_fitness(a_nest): 
+ 
+def get_fitness(a_nest,settings): 
     import math 
     import get_score 
-    temp_nest = a_nest 
-    nd = len(temp_nest[0]) 
-    for j in range(nd): 
-        if j == 1 or j == 0: 
-            temp_nest[0][j] = int(round(temp_nest[0][j])) 
-        elif j == 5: 
-            temp_nest[0][j] = int(round(temp_nest[0][j]/float(6))*6) 
+    a_nest[0] = int(round(a_nest[0])) 
+    a_nest[1] = int(round(a_nest[1]))
+    a_nest[5] = int(round(a_nest[5]/float(6))*6) 
     #Calls SWIRLS and scoring function 
-    a_nest[6] = get_score.get_score(temp_nest) 
+    a_nest[6] = get_score.get_score(a_nest,settings) 
+    print 'fitness of'
+    print a_nest(range(0,5))
+    print 'is'
+    print a_nest[6]
     return a_nest[6] 
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
