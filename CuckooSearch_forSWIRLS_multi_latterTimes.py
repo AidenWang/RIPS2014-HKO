@@ -40,7 +40,7 @@ def replace_nests(nests,new_nests,nest_number,nd):
         nests.pop()
         
     return nests
-  
+    
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
 def get_cuckoo(nests, best_nest, Lb, Ub, nest_number,nd,stepsize, percentage): 
