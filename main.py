@@ -1,5 +1,6 @@
 #date and time to start forecast in YYYYMMDDHHNN format 
-date_list = [201006100300] 
+#date_list = [201006100300] 
+date_list = 201006100300
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls 
 #date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon 
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         if optimization_type == 3: 
             dump = GS.imp_GS(iterations, solution_number, settings)"""
         nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-        while(True):
+        while True:
         	CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
         #outputs and saves results 
         print "parameters = " + str(dump[0]) 
