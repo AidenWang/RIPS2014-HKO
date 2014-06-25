@@ -56,7 +56,7 @@ if __name__ == "__main__":
         if optimization_type == 3: 
             dump = GS.imp_GS(iterations, solution_number, settings)"""
         nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-        while(true):   
+        while(True):   
 		        CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
         #outputs and saves results 
         print "parameters = " + str(dump[0]) 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 dump = GS.imp_GS(iterations, solution_number, settings) 
             #outputs and saves results """
             nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-            while(true):   
+            while(True):   
 		            CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
             print "parameters = " + str(dump[0]) 
             print "score = " + str(dump[1]) 
