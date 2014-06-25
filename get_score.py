@@ -15,25 +15,25 @@ def get_score(params, settings):
     #list of scores for each date in date_list
     scores = []
     #Loops over all dates in main.get_date()
-    for intime in date_list:
+    #for intime in date_list:
         #Generate forecast list 
-        qpf = get_data.get_forecast(intime, start_lvl, max_lvl, rho, alpha, sigma, interval, base_dir, save_dir)
+    qpf = get_data.get_forecast(date_list, start_lvl, max_lvl, rho, alpha, sigma, interval, base_dir, save_dir)
  
         #Generate actual raingauge list 
-        actual = get_data.get_actual(intime, base_dir)
+    actual = get_data.get_actual(date_list, base_dir)
  
         #Peak finding
-        qpf_maxes = moving_max.moving_max(qpf)
+    qpf_maxes = moving_max.moving_max(qpf)
         #Filter forecast
-        [qpf_maxes, qpf_times] = filter_peaks.peakfilter(qpf_maxes)
+    [qpf_maxes, qpf_times] = filter_peaks.peakfilter(qpf_maxes)
  
         #Actual peak finding
-        actual_maxes = moving_max.moving_max(actual)
+    actual_maxes = moving_max.moving_max(actual)
         #Filter actual
-        [actual_maxes, actual_times] = filter_peaks.peakfilter(actual_maxes)
+    [actual_maxes, actual_times] = filter_peaks.peakfilter(actual_maxes)
  
         #Scores
-        scores.append(math.sqrt(score_forecast.score_forecast(qpf, qpf_maxes, qpf_times, actual, actual_maxes, actual_times, weight_scheme)))
+    scores.append(math.sqrt(score_forecast.score_forecast(qpf, qpf_maxes, qpf_times, actual, actual_maxes, actual_times, weight_scheme)))
  
     #Average score over all dates in range
     score = numpy.average(scores)
