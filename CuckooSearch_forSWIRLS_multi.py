@@ -43,22 +43,18 @@ def change_settings(settings): #base time shifting
         nn = 0
     else:
         nn = nn + 6
-    if hh = 23:
+    if hh == 23:
         hh = 0
     else:
         hh = hh + 1
-    if (mm < 8 && mm%2 == 1 && dd == 31) || (mm>=8 && mm%2 == 0 && dd == 31):
+    if (mm < 8 and mm%2 == 1 and dd == 31) or (mm>=8 and mm%2 == 0 and dd == 31) or (mm == 2 and leapyr(yy) and dd == 29) or (mm == 2 and (not leapyr(yy)) and dd == 28) or ():
         dd = 1
-    else if mm == 2 && leapyr(yy) && dd == 29:
-        dd = 1
-    else if mm == 2 && !leapyr(yy) && dd == 28:
-        dd = 1
-    else if dd = 30:
+    elif dd == 30:
         dd = 1
     else:
         dd = dd + 1
     if mm == 12:
-        mm = 1:
+        mm = 1
     else:
         mm = mm + 1
     yy = yy + 1
