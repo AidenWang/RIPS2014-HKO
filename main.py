@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 dump = GS.imp_GS(iterations, solution_number, settings) 
             #outputs and saves results """
             nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-            while(True):   
+            while True:   
 		            CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
             print "parameters = " + str(dump[0]) 
             print "score = " + str(dump[1]) 
