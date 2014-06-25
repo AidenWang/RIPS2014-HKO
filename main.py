@@ -75,11 +75,11 @@ if __name__ == "__main__":
     if average_type == 2: 
         #stores original save_as name 
         original_save_as = save_as 
-        for date in date_list: 
+        #for date in date_list: 
             #appends the date to the end of original save_as name 
-            save_as = original_save_as + str(date) 
+        save_as = original_save_as + str(date) 
             #changes the settings passed to get_score to only include a single date 
-            settings = [date_list, base_dir, save_dir, save_as] 
+        settings = [date_list, base_dir, save_dir, save_as] 
             #runs desired optimization 
             """if optimization_type == 1: 
                 dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings) 
@@ -88,15 +88,15 @@ if __name__ == "__main__":
             if optimization_type == 3: 
                 dump = GS.imp_GS(iterations, solution_number, settings) 
             #outputs and saves results """
-            nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-            while True:   
-            	CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
-            print "parameters = " + str(dump[0]) 
-            print "score = " + str(dump[1]) 
-            parameters = dump[0] 
-            score = dump[1] 
-            f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
-            f.write(repr(parameters) + ' ' +  str(score)) 
-            f.close() 
+        nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
+        while True:   
+            CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
+        print "parameters = " + str(dump[0]) 
+        print "score = " + str(dump[1]) 
+        parameters = dump[0] 
+        score = dump[1] 
+        f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
+        f.write(repr(parameters) + ' ' +  str(score)) 
+        f.close() 
             #creates file with top 100 distinct parameter sets 
-            sort_file.sort_file(save_dir, save_as) 
+        sort_file.sort_file(save_dir, save_as) 
