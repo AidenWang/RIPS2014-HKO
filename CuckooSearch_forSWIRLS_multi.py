@@ -93,11 +93,11 @@ def change_settings(settings): #base time shifting
 
 
 def replace_nests(nests, new_nests, settings): 
-    print '============== REPLACING NESTS ==============' + '\n'
+    print '\n' + '==================== REPLACING NESTS ====================' + '\n'
     from operator import itemgetter 
     change_settings(settings)
     for i in range(len(nests)):
-        print str(i) , '   ' , str(nests[i])
+        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
 
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
@@ -106,23 +106,23 @@ def replace_nests(nests, new_nests, settings):
 
     nests.sort(key=lambda x: x[6], reverse = True)
 
-    print '\n' + '============== SORTED NESTS ==============' + '\n'
+    print '\n' + '==================== SORTED NESTS ====================' + '\n'
 
     for i in range(len(nests)):
-        print str(i) , '   ' , str(nests[i])
+        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
 
     for i in range(len(new_nests)): 
         nests.pop()
 
-    print '\n' + '============== UPDATED NESTS ==============' + '\n'
+    print '\n' + '==================== UPDATED NESTS ====================' + '\n'
 
     for i in range(len(nests)):
-        print str(i) , '   ' , str(nests[i])
+        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
     
-    print '\n' + 'LIST OF NEW NESTS' + '\n'
+    print '\n' + '==================== LIST OF NEW NESTS ====================' + '\n'
 
     for i in range(len(new_nests)):
-        print str(i) , '   ' , str(new_nests[i])
+        print ' '*(3-len(str(i))), str(i) , '   ' , str(new_nests[i])
         
     return nests
 
