@@ -36,29 +36,39 @@ def leapyr(n):
         return False
 
 def change_settings(settings): #base time shifting
-    timestr = settings[0]
-    yy = int(timestr[0:4]); mm = int(timestr[4:6]); dd = int(timestr[6:8])
-    hh = int(timestr[8:10]); nn = int(timestr[10:12])
-    if nn == 54:
+    timestr = str(settings[0])
+    yy = int(timestr[0:4])
+    mm = int(timestr[4:6])
+    dd = int(timestr[6:8])
+    hh = int(timestr[8:10])
+    nn = int(timestr[10:12])
+    tmpm = mm
+    tmpd = dd
+    tmph = hh
+    if nn == 30:
         nn = 0
     else:
-        nn = nn + 6
-    if hh == 23:
-        hh = 0
-    else:
-        hh = hh + 1
-    if (mm < 8 and mm%2 == 1 and dd == 31) or (mm>=8 and mm%2 == 0 and dd == 31) or (mm == 2 and leapyr(yy) and dd == 29) or (mm == 2 and (not leapyr(yy)) and dd == 28) or ():
-        dd = 1
-    elif dd == 30:
-        dd = 1
-    else:
-        dd = dd + 1
-    if mm == 12:
-        mm = 1
-    else:
-        mm = mm + 1
-    yy = yy + 1
-    
+        nn = nn + 30
+    if nn == 0:
+        if hh == 23:
+            hh = 0
+        else:
+            hh = hh + 1
+    if hh == 0 and hh != tmph:
+        if (mm < 8 and mm%2 == 1 and dd == 31) or (mm>=8 and mm%2 == 0 and dd == 31) or (mm == 2 and leapyr(yy) and dd == 29) or (mm == 2 and (not leapyr(yy)) and dd == 28) or ():
+            dd = 1
+        elif dd == 30:
+            dd = 1
+        else:
+            dd = dd + 1
+    if dd == 1 and dd != tmpd:
+        if mm == 12:
+            mm = 1
+        else:
+            mm = mm + 1
+    if mm == 1 and mm != tmpm:
+        yy = yy + 1
+
     yystr = str(yy)
     if mm < 10:
         mmstr = '0' + str(mm)
@@ -86,28 +96,32 @@ def change_settings(settings): #base time shifting
 def replace_nests(nests, new_nests, settings): 
     from operator import itemgetter 
     change_settings(settings)
-    for i in range(new_nest):
-        get_fitness(new_nest[i], settings)
+    for i in range(len(new_nests)):
+        get_fitness(new_nests[i], settings)
     nests = nests + new_nests
-    sorted(nests, key = itemgetter(6), reverse = true)
-    for i in range(new_nest): 
+    sorted(nests, key = itemgetter(6), reverse = True)
+    for i in range(len(new_nests)): 
         nests.pop()
         
     return nests
     
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
-def get_new_nests(nests, best_nest, Lb, Ub, nest_number, stepsize, percentage): 
+def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage): 
     import math 
     import scipy.special 
-    import random 
+    import random
+    from operator import itemgetter 
     #Mantegna's Algorithm 
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
     
+    sorted(nests, key = itemgetter(6), reverse = True)
+    best_nest = nests[0]
+
     random.shuffle(nests)
-    frac = range(int(round(nest_number*percentage)))
-    new_nests = [[0 for i in range(7)] in range(frac)]
+    frac = int(round(nest_number*percentage))
+    new_nests = [[0 for i in range(7)] for j in range(frac)]
     for i in range(frac): 
         temp = nests[i][:] 
         step = [0]*len(temp) 
@@ -188,7 +202,7 @@ def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings):
     return nests, fitness 
   
 #The function that calls other functions for cuckoo search. 
-def cuckoo_search(nests, Iterations, solution_number, settings):
+def cuckoo_search(nests, Iterations, nest_number, settings): 
     import random 
     import math, multiprocessing 
     import os 
@@ -217,7 +231,7 @@ def cuckoo_search(nests, Iterations, solution_number, settings):
     #Opens parallel processing 
     N_inter = 0
     while N_inter < Iterations: 
-        replace_nests(nests, get_new_nest(nest, Lb, Ub, nest_number, stepsize))
+        replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
       
       
     #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
