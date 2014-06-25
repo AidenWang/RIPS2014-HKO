@@ -1,5 +1,6 @@
 #date and time to start forecast in YYYYMMDDHHNN format 
-date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
+date_list = [201006100300] 
+#date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls 
 #date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon 
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530,  
@@ -23,11 +24,11 @@ optimization_type = 1
 average_type = 2
 #number of iterations to run optimization for 
 #defults: cuckoo-100, PSO-50, GA-100 
-iterations = 100
+iterations = 3
 #number of candidate solutions held. 
 #should be a multiple of the number of processors used 
 #defaults: cuckoo-25, PSO-200, GA-200 
-solution_number = 25
+solution_number = 32
   
 #list of settings to be  passed 
 settings = [date_list, base_dir, save_dir, save_as] 
@@ -46,14 +47,17 @@ if __name__ == "__main__":
     #multi-date optimization 
     if average_type == 1: 
         #runs desired optimization function 
-        if optimization_type == 1: 
+        """if optimization_type == 1: 
             CuckooSearch_forSWIRLS_multi.initialize(iterations, 32, settings)
             while true:
                 CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, 32, settings)
         if optimization_type == 2: 
             dump = psof.pso(iterations, solution_number, settings) 
         if optimization_type == 3: 
-            dump = GS.imp_GS(iterations, solution_number, settings) 
+            dump = GS.imp_GS(iterations, solution_number, settings)"""
+        nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
+        while(true):   
+		        CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
         #outputs and saves results 
         print "parameters = " + str(dump[0]) 
         print "score = " + str(dump[1]) 
@@ -76,13 +80,16 @@ if __name__ == "__main__":
             #changes the settings passed to get_score to only include a single date 
             settings = [[date], base_dir, save_dir, save_as] 
             #runs desired optimization 
-            if optimization_type == 1: 
+            """if optimization_type == 1: 
                 dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings) 
             if optimization_type == 2: 
                 dump = psof.pso(iterations, solution_number, settings) 
             if optimization_type == 3: 
                 dump = GS.imp_GS(iterations, solution_number, settings) 
-            #outputs and saves results 
+            #outputs and saves results """
+            nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
+            while(true):   
+		            CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
             print "parameters = " + str(dump[0]) 
             print "score = " + str(dump[1]) 
             parameters = dump[0] 
