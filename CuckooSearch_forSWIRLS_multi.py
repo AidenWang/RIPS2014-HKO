@@ -58,6 +58,28 @@ def change_settings(settings): #base time shifting
     else:
         mm = mm + 1
     yy = yy + 1
+    
+    yystr = str(yy)
+    if mm < 10:
+        mmstr = '0' + str(mm)
+    else:
+        mmstr = str(mm)
+    if dd < 10:
+        ddstr = '0' + str(dd)
+    else:
+        ddstr = str(dd)
+    if hh < 10:
+        hhstr = '0' + str(hh)
+    else:
+        hhstr = str(hh)
+    if nn < 10:
+        nnstr = '0' + str(nn)
+    else:
+        nnstr = str(nn)
+    
+    settings[0] = yystr + mmstr + ddstr + hhstr + nnstr
+    
+    return settings[0]
         
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
