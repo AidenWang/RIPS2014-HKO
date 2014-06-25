@@ -1,8 +1,8 @@
 import os, datetime, time, sys, random
 
-def get_forecast(intime, min_lvl, max_lvl, rho, alpha, sigma, interval, base_dir, save_dir):
+def get_forecast(date_list, min_lvl, max_lvl, rho, alpha, sigma, interval, base_dir, save_dir):
     # Runs the integrated script for SWIRLS forecaset, converts to list
-    timestr = str(intime)
+    timestr = str(date_list)
     # converts time to datetime format for addition of times
     yy = int(timestr[0:4]); mm = int(timestr[4:6]); dd = int(timestr[6:8])
     hh = int(timestr[8:10]); nn = int(timestr[10:12])
