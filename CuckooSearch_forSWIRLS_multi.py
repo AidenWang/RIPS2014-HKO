@@ -25,11 +25,44 @@ def get_fitness(a_nest, settings):
     print a_nest[6]
     return a_nest[6]
 
+def leapyr(n):
+    if n % 400 == 0:
+        return True
+    if n % 100 == 0:
+        return False
+    if n % 4 == 0:
+        return True
+    else:
+        return False
+
 def change_settings(settings): #base time shifting
     timestr = settings[0]
     yy = int(timestr[0:4]); mm = int(timestr[4:6]); dd = int(timestr[6:8])
     hh = int(timestr[8:10]); nn = int(timestr[10:12])
-    
+    if nn == 54:
+        nn = 0
+    else:
+        nn = nn + 6
+    if hh = 23:
+        hh = 0
+    else:
+        hh = hh + 1
+    if (mm < 8 && mm%2 == 1 && dd == 31) || (mm>=8 && mm%2 == 0 && dd == 31):
+        dd = 1
+    else if mm == 2 && leapyr(yy) && dd == 29:
+        dd = 1
+    else if mm == 2 && !leapyr(yy) && dd == 28:
+        dd = 1
+    else if dd = 30:
+        dd = 1
+    else:
+        dd = dd + 1
+    if mm == 12:
+        mm = 1:
+    else:
+        mm = mm + 1
+    yy = yy + 1
+        
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
 def replace_nests(nests, new_nests, settings): 
