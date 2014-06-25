@@ -188,7 +188,7 @@ def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings):
     return nests, fitness 
   
 #The function that calls other functions for cuckoo search. 
-def cuckoo_search(Iterations, nest_number, settings): 
+def cuckoo_search(nests, Iterations, solution_number, settings):
     import random 
     import math, multiprocessing 
     import os 
