@@ -11,7 +11,7 @@ def num(s):
   
 #input is a list of 6 parameters and outputs the fitness of the solution 
  
-def get_fitness(a_nest,settings): 
+def get_fitness(a_nest, settings): 
     import math 
     import get_score 
     a_nest[0] = int(round(a_nest[0])) 
@@ -24,10 +24,19 @@ def get_fitness(a_nest,settings):
     print 'is'
     print a_nest[6]
     return a_nest[6]
+
+def change_settings(settings): #base time shifting
+    timestr = settings[0]
+    yy = int(timestr[0:4]); mm = int(timestr[4:6]); dd = int(timestr[6:8])
+    hh = int(timestr[8:10]); nn = int(timestr[10:12])
+    
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-def replace_nests(nests, new_nests): 
+def replace_nests(nests, new_nests, settings): 
     from operator import itemgetter 
+    change_settings(settings)
+    for i in range(new_nest):
+        get_fitness(new_nest[i], settings)
     nests = nests + new_nests
     sorted(nests, key = itemgetter(6), reverse = true)
     for i in range(new_nest): 
