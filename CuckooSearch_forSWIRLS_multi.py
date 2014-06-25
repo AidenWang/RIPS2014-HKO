@@ -19,10 +19,7 @@ def get_fitness(a_nest, settings):
     a_nest[5] = int(round(a_nest[5]/float(6))*6) 
     #Calls SWIRLS and scoring function 
     a_nest[6] = get_score.get_score(a_nest,settings) 
-    print 'fitness of'
-    print a_nest
-    print 'is'
-    print a_nest[6]
+    print 'The fitness of', a_nest[0:6], 'is', a_nest[6], '\n'
     return a_nest[6]
 
 def leapyr(n):
@@ -93,17 +90,42 @@ def change_settings(settings): #base time shifting
         
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
+
+
 def replace_nests(nests, new_nests, settings): 
+    print '============== REPLACING NESTS ==============' + '\n'
     from operator import itemgetter 
     change_settings(settings)
+    for i in range(len(nests)):
+        print str(i) , '   ' , str(nests[i])
+
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
+
     nests = nests + new_nests
-    sorted(nests, key = itemgetter(6), reverse = True)
+
+    nests.sort(key=lambda x: x[6], reverse = True)
+
+    print '\n' + '============== SORTED NESTS ==============' + '\n'
+
+    for i in range(len(nests)):
+        print str(i) , '   ' , str(nests[i])
+
     for i in range(len(new_nests)): 
         nests.pop()
+
+    print '\n' + '============== UPDATED NESTS ==============' + '\n'
+
+    for i in range(len(nests)):
+        print str(i) , '   ' , str(nests[i])
+    
+    print '\n' + 'LIST OF NEW NESTS' + '\n'
+
+    for i in range(len(new_nests)):
+        print str(i) , '   ' , str(new_nests[i])
         
     return nests
+
     
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
@@ -209,7 +231,7 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     import exceptions 
     import string 
     #These are all changable parameters 
-    nd = 7 #dimension of solutions 
+    nd = 7 #dimension of solutions (6 parameter + 1 fitness score)
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
     Ub = [7,7,24,50000,9,60,1]  #upper bound to search domain. Same dimension of solutions 
     stepsize = [1,1,0.75,0.75,0.75,1.5,0] #new addition 7/22 
@@ -223,22 +245,22 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #        #!!!The second parameter must be >= first parameter so the following line guarantees this. 
     #            #!!!Change or comment out if different conditions are necessary 
     #        if j == 1: 
-    #                a_nest[j] = round((Ub[j]-a_nest[0])*random.random() + a_nest[0],3) 
-    #            else: 
+    #             a_nest[j] = round((Ub[j]-a_nest[0])*random.random() + a_nest[0],3) 
+    #        else: 
     #                #Picks random points in parameter space 
-    #                a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
+    #             a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
     #    nests[i] = a_nest 
     #Opens parallel processing 
     N_inter = 0
     while N_inter < Iterations: 
-        replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
+        nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
       
       
     #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
     #    N_inter = N_inter+1
   
-  #      score_new_nests = [0]*nest_number 
-   #     for j in range(nest_number): 
+    #    score_new_nests = [0]*nest_number 
+    #    for j in range(nest_number): 
     
     #        score_new_nests[j] = add_settings(new_nests[j], settings) 
     #    new_fitness = pool.map(get_fitness,score_new_nests) 
