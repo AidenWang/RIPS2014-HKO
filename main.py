@@ -79,7 +79,7 @@ if __name__ == "__main__":
             #appends the date to the end of original save_as name 
             save_as = original_save_as + str(date) 
             #changes the settings passed to get_score to only include a single date 
-            settings = [[date], base_dir, save_dir, save_as] 
+            settings = [date_list, base_dir, save_dir, save_as] 
             #runs desired optimization 
             """if optimization_type == 1: 
                 dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings) 
