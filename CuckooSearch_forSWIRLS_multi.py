@@ -16,6 +16,7 @@ def get_fitness(a_nest, settings):
     import get_score 
     a_nest[0] = int(round(a_nest[0])) 
     a_nest[1] = int(round(a_nest[1]))
+    a_nest[2] = int(round(a_nest[2]))
     a_nest[5] = int(round(a_nest[5]/float(6))*6) 
     #Calls SWIRLS and scoring function 
     a_nest[6] = get_score.get_score(a_nest,settings) 
@@ -90,12 +91,17 @@ def change_settings(settings): #base time shifting
         
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-def replace_nests(nests, new_nests, settings): 
-    print '\n'*4 + '='*20 + ' REPLACING NESTS ' + '='*20 + '\n'
-    from operator import itemgetter 
+def replace_nests(nests, new_nests, settings):
+    from operator import itemgetter  
     change_settings(settings)
+    print '\n'*3, '*'*10, 'START OF INFORMATION FOR', settings[0], '*'*10, '\n'
+    
+    """
+    print '\n' + '='*20 + ' REPLACING NESTS ' + '='*20 + '\n'
     for i in range(len(nests)):
-        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
+        print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])"""
+
+    print '\n', '='*20, ' FITNESS OF NEW NESTS ', '='*20, '\n'
 
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
@@ -105,25 +111,26 @@ def replace_nests(nests, new_nests, settings):
 
     nests.sort(key=lambda x: x[6], reverse = True)
 
+    """
     print '\n' + '='*20 + ' SORTED NESTS ' + '='*20 + '\n'
 
     for i in range(len(nests)):
-        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
+        print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])
 
     for i in range(len(new_nests)): 
-        nests.pop()
+        nests.pop()"""
 
     print '\n' + '='*20 + ' UPDATED NESTS ' + '='*20 + '\n'
 
     for i in range(len(nests)):
-        print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
-    
+        print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])
+    """  
     print '\n' + '='*20 + ' LIST OF NEW NESTS ' + '='*20 + '\n'
 
     for i in range(len(new_nests)):
-        print ' '*(3-len(str(i))), str(i) , '   ' , str(new_nests[i])
-        
-    print '\n'*4 + '*'*120 + '\n'
+        print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(new_nests[i])"""
+
+    print '\n'*3, '*'*10, 'END OF INFORMATION FOR', settings[0], '*'*10, '\n'*3
 
     return nests
     
@@ -254,9 +261,9 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     N_inter = 0
     while N_inter < Iterations: 
         nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
-        print 'now the 32 parameters are'
+        """print 'NOW THE 32 PARAMETERS ARE:' + '\n'
         for i in range(len(nests)):
-	    print str(i+1) + '.' + '\t' + str(nests[i])
+	    print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])"""
       
       
     #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
@@ -339,6 +346,8 @@ def initialize(Iterations, nest_number, settings):
     nests[30] = [2,7,9,10000,1.5,12,0]
     nests[31] = [2,7,9,10000,1.5,30,0]
     
+    print '\n'*4 + '='*20 + ' INITIALIZING ' + '='*20 + '\n'
+
     #initiates number by parameters in the sort file 
     #Initates nest_number of solutions by randomly picking points in parameter space 
     #for i in range(nest_number): 
