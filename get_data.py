@@ -17,14 +17,14 @@ def get_forecast(date_list, min_lvl, max_lvl, rho, alpha, sigma, interval, base_
         "-dbz33_zrhk"
     params = str(min_lvl) + " " + str(max_lvl) + " " + str(rho) + " "\
         + str(alpha) +  " " + str(sigma) + " " + str(interval)
- 
-    print '\n', 'Go to compare ' + timestr
+
+    ## print '\n', 'Go to compare ' + timestr
     # checks if forecast has already been run
     while not os.path.isfile(forecastpath + '/ts_rank14p_' + timestr):
         #if it hasn't run it
-    os.chdir(base_dir + "spt")
-    os.system('./ForTuningCycle.spt ' + timestr + ' ' + params + ' > ' + \
-    '/dev/null 2> /dev/null')
+	os.chdir(base_dir + "spt")
+	os.system('./ForTuningCycle.spt ' + timestr + ' ' + params + ' > ' + \
+	'/dev/null 2> /dev/null')
         #if the file still doesn't exist, output all zero forecast to guarantee 0 score
         if not os.path.isfile(forecastpath + '/ts_rank14p_' + timestr):
             #print/save error
@@ -58,12 +58,12 @@ def get_forecast(date_list, min_lvl, max_lvl, rho, alpha, sigma, interval, base_
         "-a" + str(alpha) + "-s" + str(sigma) + "-i" + str(interval) + "-dbz33_zrhk")
     # Returns forecast
     return forecast
-     
- 
- 
- 
- 
- 
+    
+
+
+
+
+
 def prepare_actual(input_list):
     # Runs actual data preparation script
     intime = input_list[0]; base_dir = input_list[1]
@@ -84,12 +84,12 @@ def prepare_actual(input_list):
         os.chdir('../module/04_post-processing/12_make_obs_rank_db_60qpfAtGauge/spt')
         os.system('./MakeObsRank.spt ' + str(temptimestr) + ' ' + str(temptimestr) + \
             ' 5 14 dummy > ' + '/dev/null')
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
 def get_actual(intime, base_dir):
     # Parses actual data to list
     # parses input
@@ -113,7 +113,7 @@ def get_actual(intime, base_dir):
             "irregular/gauge_rf/hk/rf60m_qced/rank14p"
         os.chdir(raingaugepath)
         titleline = 1
-        print raingaugepath
+        ##print raingaugepath
         raingaugefile = open("rank14p_" + temptimestr)
         for line in raingaugefile:
             if titleline == 1:
