@@ -19,7 +19,7 @@ def get_fitness(a_nest, settings):
     a_nest[5] = int(round(a_nest[5]/float(6))*6) 
     #Calls SWIRLS and scoring function 
     a_nest[6] = get_score.get_score(a_nest,settings) 
-    print 'The fitness of', a_nest[0:6], 'is', a_nest[6], '\n'
+    print 'The fitness of', a_nest[:6], 'is', a_nest[6] 
     return a_nest[6]
 
 def leapyr(n):
@@ -90,10 +90,8 @@ def change_settings(settings): #base time shifting
         
   
 #input new and old solutions with new and old scores and replaces old if new has higher score 
-
-
 def replace_nests(nests, new_nests, settings): 
-    print '\n' + '==================== REPLACING NESTS ====================' + '\n'
+    print '\n'*4 + '='*20 + ' REPLACING NESTS ' + '='*20 + '\n'
     from operator import itemgetter 
     change_settings(settings)
     for i in range(len(nests)):
@@ -101,12 +99,13 @@ def replace_nests(nests, new_nests, settings):
 
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
+        new_nests[i][2] = int(round(new_nests[i][2]))
 
     nests = nests + new_nests
 
     nests.sort(key=lambda x: x[6], reverse = True)
 
-    print '\n' + '==================== SORTED NESTS ====================' + '\n'
+    print '\n' + '='*20 + ' SORTED NESTS ' + '='*20 + '\n'
 
     for i in range(len(nests)):
         print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
@@ -114,18 +113,19 @@ def replace_nests(nests, new_nests, settings):
     for i in range(len(new_nests)): 
         nests.pop()
 
-    print '\n' + '==================== UPDATED NESTS ====================' + '\n'
+    print '\n' + '='*20 + ' UPDATED NESTS ' + '='*20 + '\n'
 
     for i in range(len(nests)):
         print ' '*(3-len(str(i))), str(i) , '   ' , str(nests[i])
     
-    print '\n' + '==================== LIST OF NEW NESTS ====================' + '\n'
+    print '\n' + '='*20 + ' LIST OF NEW NESTS ' + '='*20 + '\n'
 
     for i in range(len(new_nests)):
         print ' '*(3-len(str(i))), str(i) , '   ' , str(new_nests[i])
         
-    return nests
+    print '\n'*4 + '*'*120 + '\n'
 
+    return nests
     
 #obtains new solutions from old via random walk sampling from a Levy Distribution (Levy Flight) 
 #Levy Distribution is sampled by Mantegna's Algorithm 
@@ -231,7 +231,7 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     import exceptions 
     import string 
     #These are all changable parameters 
-    nd = 7 #dimension of solutions (6 parameter + 1 fitness score)
+    nd = 7 #dimension of solutions 
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
     Ub = [7,7,24,50000,9,60,1]  #upper bound to search domain. Same dimension of solutions 
     stepsize = [1,1,0.75,0.75,0.75,1.5,0] #new addition 7/22 
@@ -245,22 +245,25 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #        #!!!The second parameter must be >= first parameter so the following line guarantees this. 
     #            #!!!Change or comment out if different conditions are necessary 
     #        if j == 1: 
-    #             a_nest[j] = round((Ub[j]-a_nest[0])*random.random() + a_nest[0],3) 
-    #        else: 
+    #                a_nest[j] = round((Ub[j]-a_nest[0])*random.random() + a_nest[0],3) 
+    #            else: 
     #                #Picks random points in parameter space 
-    #             a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
+    #                a_nest[j] = round(((Ub[j]-Lb[j])*random.random()) + Lb[j],3) 
     #    nests[i] = a_nest 
     #Opens parallel processing 
     N_inter = 0
     while N_inter < Iterations: 
         nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
+        print 'now the 32 parameters are'
+        for i in range(len(nests)):
+	    print str(i+1) + '.' + '\t' + str(nests[i])
       
       
     #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
     #    N_inter = N_inter+1
   
-    #    score_new_nests = [0]*nest_number 
-    #    for j in range(nest_number): 
+  #      score_new_nests = [0]*nest_number 
+   #     for j in range(nest_number): 
     
     #        score_new_nests[j] = add_settings(new_nests[j], settings) 
     #    new_fitness = pool.map(get_fitness,score_new_nests) 
