@@ -144,8 +144,8 @@ if __name__ == "__main__":
     if average_type == 1: 
         #runs desired optimization function 
         CuckooSearch_forSWIRLS_multi.initialize(iterations, 32, settings)
-        while True:
-            CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, 32, settings)
+        #while True:
+        CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, 32, settings)
         #outputs and saves results 
         print "parameters = " + str(dump[0]) 
         print "score = " + str(dump[1]) 
@@ -170,8 +170,8 @@ if __name__ == "__main__":
             #runs desired optimization 
 	nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
         
-        while True:  
-	    CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
+        #while True:  
+	CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
 
         print "parameters = " + str(dump[0]) 
         print "score = " + str(dump[1]) 
