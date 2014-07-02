@@ -143,21 +143,21 @@ def replace_nests(nests, new_nests, settings):
 def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage): 
     import math 
     import scipy.special 
-    import numpy
+    import levy
     import random
     from operator import itemgetter 
     #Mantegna's Algorithm 
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
     
-    nests.sort(key=lambda x: x[6], reverse = True) #arranging the nests in descending order of scores
+    sorted(nests, key = itemgetter(6), reverse = True)
     best_nest = nests[0]
 
+    random.shuffle(nests)
     frac = int(round(nest_number*percentage))
-    random.shuffle(nests[int((nest_number-frac)*0.5):])
     new_nests = [[0 for i in range(7)] for j in range(frac)]
     for i in range(frac): 
-        temp = nests[nest_number-i-1][:] #so temp saves the worst "frac" number of nests
+        temp = nests[i][:] 
         step = [0]*len(temp) 
         for j in range(len(temp)): 
             sign = 1
@@ -165,7 +165,9 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
             b = random.gauss(0,1) 
             if a < 0: 
                 sign = -1
-            step[j] = sign*stepsize[j]*((abs(a)/abs(b))**(1/alpha))*(temp[j]-best_nest[j]) 
+                
+            step[j] = stepsize[j]*levy.random(2, 2)
+            #step[j] = sign*stepsize[j]*((abs(a)/abs(b))**(1/alpha))*(temp[j]-best_nest[j]) 
             temp[j] = round(temp[j]+step[j]*random.gauss(0,1),3) 
             #check to see if new solution is within bounds 
             if temp[j] <= Lb[j]: 
@@ -173,14 +175,13 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
             elif temp[j] >= Ub[j]: 
                 temp[j] = Ub[j] 
             #!!!we need second parameter to be larger than first. If conditions like these are necessary, change this section to 
-            #!!!needed conditions. Otherwise remove or comment out. 
-	    
-        if temp[1] < temp[0]: 
-            coin = random.randint(0,1) 
-            if coin == 0: 
-                temp[0] = round(random.uniform(Lb[0],temp[1]),3) 
-            else: 
-                temp[1] = round(random.uniform(temp[0],Ub[1]),3) 
+            #!!!needed conditions. Otherwise remove or comment out.  
+            if j == 1 and temp[j] < temp[0]: 
+                coin = random.randint(0,1) 
+                if coin == 0: 
+                    temp[0] = round(random.uniform(Lb[0],temp[j]),3) 
+                else: 
+                    temp[j] = round(random.uniform(temp[0],Ub[j]),3) 
         new_nests[i][:] = temp 
     return new_nests 
   
