@@ -93,17 +93,21 @@ def change_settings(settings): #base time shifting
 def replace_nests(nests, new_nests, settings):
     import numpy
     from operator import itemgetter  
-    print '\n'*3 + 'Producing new nests for ' + str(settings[0]) + ':'
+    print '\n'*3 + 'Producing new nests for ' + str(settings[0]) + ':' + '\n'
     
     """
     print '\n' + '='*20 + ' REPLACING NESTS ' + '='*20 + '\n'
     for i in range(len(nests)):
         print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])"""
 
-    print '\n' + '='*17 + ' FITNESS OF NEW NESTS ' + '='*17 + '\n'
+    print 'Old nests: \n'
 
     for i in range(len(nests)):
     	get_fitness(nests[i], settings)
+	if i*100/(len(nests))/10 < (i+1)*100/(len(nests))/10:
+	    print str(i*100/(len(nests)))+ '% done'
+
+    print '\n' + '='*17 + ' FITNESS OF NEW NESTS ' + '='*17 + '\n'
 
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
