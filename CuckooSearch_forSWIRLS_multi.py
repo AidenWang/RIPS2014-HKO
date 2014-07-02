@@ -154,7 +154,7 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
     
-    sorted(nests, key = itemgetter(6), reverse = True)
+    nests.sort(key=lambda x: x[6], reverse = True)
     best_nest = nests[0]
 
     random.shuffle(nests)
