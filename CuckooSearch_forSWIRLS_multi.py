@@ -103,6 +103,8 @@ def replace_nests(nests, new_nests, settings):
 
     print '\n' + '='*17 + ' FITNESS OF NEW NESTS ' + '='*17 + '\n'
 
+    for i in range(len(nests)):
+    	get_fitness(nests[i], settings)
     for i in range(len(new_nests)):
         get_fitness(new_nests[i], settings)
         new_nests[i][2] = int(round(new_nests[i][2]))
@@ -269,8 +271,8 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #    new_nests = get_cuckoo(nests,best_nest,Lb,Ub, nest_number,nd,stepsize) 
     #    N_inter = N_inter+1
   
-  #      score_new_nests = [0]*nest_number 
-   #     for j in range(nest_number): 
+    #    score_new_nests = [0]*nest_number 
+    #    for j in range(nest_number): 
     
     #        score_new_nests[j] = add_settings(new_nests[j], settings) 
     #    new_fitness = pool.map(get_fitness,score_new_nests) 
