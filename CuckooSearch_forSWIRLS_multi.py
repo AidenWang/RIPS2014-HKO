@@ -92,13 +92,17 @@ def change_settings(settings): #base time shifting
 #input new and old solutions with new and old scores and replaces old if new has higher score 
 def replace_nests(nests, new_nests, settings):
     import numpy
+    import time
     from operator import itemgetter  
+
     print '\n'*3 + 'Producing new nests for ' + str(settings[0]) + ':' + '\n'
     
     """
     print '\n' + '='*20 + ' REPLACING NESTS ' + '='*20 + '\n'
     for i in range(len(nests)):
         print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])"""
+
+    start_time = time.time()
 
     print 'Old nests: \n'
 
@@ -114,8 +118,8 @@ def replace_nests(nests, new_nests, settings):
         new_nests[i][2] = int(round(new_nests[i][2]))
 	print 'The fitness of', new_nests[i][:6], 'is', new_nests[i][6]
 
-    if numpy.std(nests[:][6]) < 10000: #do something when the scores get too close
-	print 'Too close!'
+    #if numpy.std(nests[:][6]) < 10000: #do something when the scores get too close
+	#print 'Too close!'
 
     nests = nests + new_nests
 
@@ -134,6 +138,11 @@ def replace_nests(nests, new_nests, settings):
 
     for i in range(len(nests)):
         print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])
+
+    end_time = time.time()
+
+    print '\n'+'Time spent: ' + str(end_time - start_time) + ' seconds' + '\n'
+
     """  
     print '\n' + '='*20 + ' LIST OF NEW NESTS ' + '='*20 + '\n'
 
@@ -154,14 +163,14 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
     
-    nests.sort(key=lambda x: x[6], reverse = True)
+    nests.sort(key=lambda x: x[6], reverse = True) #arranging the nests in descending order of scores
     best_nest = nests[0]
 
-    random.shuffle(nests)
     frac = int(round(nest_number*percentage))
+    random.shuffle(nests[int((nest_number-frac)*0.5):])
     new_nests = [[0 for i in range(7)] for j in range(frac)]
     for i in range(frac): 
-        temp = nests[i][:] 
+        temp = nests[nest_number-i-1][:] #so temp saves the worst "frac" number of nests
         step = [0]*len(temp) 
         for j in range(len(temp)): 
             sign = 1
@@ -188,6 +197,7 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
                     temp[j] = round(random.uniform(temp[0],Ub[j]),3) 
         new_nests[i][:] = temp 
     return new_nests 
+  
   
 #Worst Fraction of solutions take another random step 
 def empty_nest(nests,Lb,Ub,pa,nest_number,nd,fitness,settings): 
@@ -270,10 +280,9 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #    nests[i] = a_nest 
     #Opens parallel processing 
     #N_inter = 0
-
+    change_settings(settings)
     nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
     print settings[0]
-    change_settings(settings)
 
     """print 'NOW THE 32 PARAMETERS ARE:' + '\n'
     for i in range(len(nests)):
