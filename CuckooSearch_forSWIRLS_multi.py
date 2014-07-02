@@ -170,8 +170,8 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
             if a < 0: 
                 sign = -1
                 
-            step[j] = stepsize[j]*levy.random(2, 2)
-            #step[j] = sign*stepsize[j]*((abs(a)/abs(b))**(1/alpha))*(temp[j]-best_nest[j]) 
+            #step[j] = stepsize[j]*levy.random(2, 2)
+            step[j] = sign*stepsize[j]*((abs(a)/abs(b))**(1/alpha))*(temp[j]-best_nest[j]) 
             temp[j] = round(temp[j]+step[j]*random.gauss(0,1),3) 
             #check to see if new solution is within bounds 
             if temp[j] <= Lb[j]: 
