@@ -53,7 +53,7 @@ def change_settings(settings): #base time shifting
         else:
             hh = hh + 1
     if hh == 0 and hh != tmph:
-        if (mm < 8 and mm%2 == 1 and dd == 31) or (mm>=8 and mm%2 == 0 and dd == 31) or (mm == 2 and leapyr(yy) and dd == 29) or (mm == 2 and (not leapyr(yy)) and dd == 28) or ():
+        if (mm < 8 and mm%2 == 1 and dd == 31) or (mm>=8 and mm%2 == 0 and dd == 31) or (mm == 2 and leapyr(yy) and dd == 29) or (mm == 2 and (not leapyr(yy)) and dd == 28) or (elif mm == 2 and (not leapyr(yy)):):
             dd = 1
         elif dd == 30:
             dd = 1
