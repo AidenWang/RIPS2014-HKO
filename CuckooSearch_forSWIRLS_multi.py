@@ -281,7 +281,8 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #Opens parallel processing 
     #N_inter = 0
     change_settings(settings)
-    nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
+    if max(get_data.get_actual(settings[0], settings[1])) > 2:
+    	nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
     print settings[0]
 
     """print 'NOW THE 32 PARAMETERS ARE:' + '\n'
