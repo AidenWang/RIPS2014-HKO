@@ -21,12 +21,12 @@ def scoreT_peak(eT, peakA, weight_scheme):
         return peakA*math.exp(-(eT + kT)**2/(2*sigmaT**2))
     else:
         return 0
- 
+
 def scoreR_peak(eR, peakA, weight_scheme):
     import math
     #Score forecast using HKO hard cut-off metric.
     if weight_scheme == 1 or weight_scheme == 2 or weight_scheme == 3:
-    Rmax = .3*peakA
+	Rmax = .3*peakA
         if abs(eR) <= Rmax:
             return peakA*(1-math.sqrt(abs(eR/Rmax)))
         else:
@@ -44,7 +44,7 @@ def scoreR_peak(eR, peakA, weight_scheme):
         return peakA*math.exp(-(eR - kR)**2/(2*sigmaR**2))
     else:
         return 0
- 
+
 def scoreB_peak(eT, eR, peakA, weight_scheme):
     import math
     #Score forecast using HKO hard cut-off metric.
@@ -57,7 +57,7 @@ def scoreB_peak(eT, eR, peakA, weight_scheme):
             return 0
     else:
         return 0
- 
+
 #For peak matching, deciding which of two candidate peaks is a better match
 def tiebreaker(a, peakA, timeA, b, peakB, timeB, matchtime):
     #if one peak is way closer than the other, pick that one
@@ -84,20 +84,20 @@ def tiebreaker(a, peakA, timeA, b, peakB, timeB, matchtime):
             return a
         else:
             return b
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
 #Calculates the score for (filtered) forecast and actual data lists and peak info.
 def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_scheme):
     import numpy
- 
+
     #Weights of timing (T), intensity (R), bias (B), and least-squares error (LS)
     #Details of weight_schemes explained in get_score
     if weight_scheme == 1: #mixed sqrt metric
@@ -110,15 +110,15 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
         wT = 0.45; wR = 0.35; wLS = 0.2; wB = 0
     elif weight_scheme == 5: #offset Gaussian
         wT = 0.45; wR = 0.35; wLS = 0.2; wB = 0
- 
- 
+
+
     #peak matching
     epsilonT = [0]*len(peaksA); epsilonR = [0]*len(peaksA);
     matchedpeaksF = [0]*len(peaksA); matchedtimesF = [0]*len(peaksA)
     #loops through actual peaks, finds best match for each
     for j in range(0, len(peaksA)):
         #best time difference to actual peak
-        besteT = 5000
+        besteT = 5000 
         for i in range(0, len(peaksF)):
             #stores whether a candidate peak is a match
             match = 0
@@ -151,8 +151,8 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
                     matchedtimesF[j] = timesF[i]
                     epsilonT[j] = eT
                     epsilonR[j] = peaksF[i] - peaksA[j]
- 
- 
+
+
     #Computes least squares score
     scoreLS = 0; normalize = 0
     #Interpolates the actual data to be of the same length as the forecast list
@@ -164,13 +164,14 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
         scoreLS += abs(forecast[x]-actual_interp[x])**2
         normalize += actual_interp[x]**2
     #normalizes by overall squared intensity. now in 0<=SLS<=1, but 1 is bad.
-    scoreLS /= normalize
+    if normalize != 0:
+    	scoreLS /= normalize
     #reverses so 1 is good
     scoreLS = 1 - scoreLS
     #floors at 0
     if scoreLS < 0:
         scoreLS = 0
-         
+        
     scoreT = 0; scoreR = 0; scoreB = 0; normalize = 0
     #Scores each peak, weights by intensity of actual peak
     for k in range(len(peaksA)):
@@ -181,8 +182,9 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
             scoreR += scoreR_peak(epsilonR[k], peaksA[k], weight_scheme)
             scoreB += scoreB_peak(epsilonT[k], epsilonR[k], peaksA[k], weight_scheme)
     #normalizes by actual peak intensity
-    scoreT /= normalize; scoreR /= normalize; scoreB /= normalize
+    if normalize != 0:
+	scoreT /= normalize; scoreR /= normalize; scoreB /= normalize
     #Computes total score
     score = wT*scoreT + wR*scoreR + wB*scoreB + wLS*scoreLS
-     
+	
     return score
