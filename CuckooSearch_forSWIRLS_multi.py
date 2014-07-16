@@ -19,7 +19,7 @@ def get_fitness(a_nest, settings):
     a_nest[2] = int(round(a_nest[2]))
     a_nest[5] = int(round(a_nest[5]/float(6))*6) 
     #Calls SWIRLS and scoring function 
-    a_nest[6] = get_score.get_score(a_nest,settings) 
+    a_nest[6] = get_score.get_score(a_nest[:6],settings) 
     return a_nest[6]
 
 def leapyr(n):
@@ -107,15 +107,14 @@ def replace_nests(nests, new_nests, settings):
     print 'Old nests: \n'
 
     for i in range(len(nests)):
-    	get_fitness(nests[i], settings)
+    	nests[i][6] = get_fitness(nests[i], settings)
 	if i*100/(len(nests))/10 < (i+1)*100/(len(nests))/10:
 	    print str(i*100/(len(nests)))+ '% done'
 
     print '\n' + '='*17 + ' FITNESS OF NEW NESTS ' + '='*17 + '\n'
 
     for i in range(len(new_nests)):
-        get_fitness(new_nests[i], settings)
-        new_nests[i][2] = int(round(new_nests[i][2]))
+        new_nests[i][6] = get_fitness(new_nests[i], settings)
 	print 'The fitness of', new_nests[i][:6], 'is', new_nests[i][6]
 
     #if numpy.std(nests[:][6]) < 10000: #do something when the scores get too close
@@ -169,14 +168,14 @@ def get_new_nests(nests, Lb, Ub, nest_number, stepsize, percentage):
     alpha = 1.5 #flexible parameter but this works well. Also need to plug in decimal form 
     sigma=(scipy.special.gamma(1+alpha)*math.sin(math.pi*alpha/2)/(scipy.special.gamma((1+alpha)/2)*alpha*2**((alpha-1)/2)))**(1/alpha) 
     
-    #nests.sort(key=lambda x: x[6], reverse = True) #arranging the nests in descending order of scores
+    nests.sort(key=lambda x: x[6], reverse = True) #arranging the nests in descending order of scores
     best_nest = nests[0]
 
-    #frac = int(round(nest_number*percentage))
-    #random.shuffle(nests[int((nest_number-frac)*0.5):])
-    #new_nests = [[0 for i in range(7)] for j in range(frac)]
-    new_nests = [[0 for i in range(7)] for j in range(nest_number)]
-    for i in range(nest_number): 
+    frac = int(round(nest_number*percentage))
+    random.shuffle(nests[int((nest_number-frac)*0.5):])
+    new_nests = [[0 for i in range(7)] for j in range(frac)]
+    #new_nests = [[0 for i in range(7)] for j in range(nest_number)]
+    for i in range(frac): 
         temp = nests[nest_number-i-1][:] #so temp saves the worst "frac" number of nests
         step = [0]*len(temp) 
         for j in range(len(temp)): 
@@ -306,7 +305,7 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     nests_copy = nests
 
     #only do Levy flights if the rainfall amount is of importance
-    if max(actual) > 2:
+    if sum(actual)/len(actual) > 2:
         nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
         nests_copy = nests
     else:
@@ -315,7 +314,7 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
         start_time = time.time()
 
         for i in range(nest_number):
-            get_fitness(nests[i],settings)
+            nests[i][6] = get_fitness(nests[i],settings)
             if i*100/(len(nests))/10 < (i+1)*100/(len(nests))/10:
 	        print str(i*100/(len(nests)))+ '% done'
         print '\n'
@@ -381,45 +380,16 @@ def initialize(Iterations, nest_number, settings):
     import os 
     import exceptions 
     import string 
+    import generate
+    import get_data
     #These are all changable parameters 
     nd = 7 #dimension of solutions 
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
     Ub = [7,7,24,50000,9,60,1]  #upper bound to search domain. Same dimension of solutions 
     stepsize = [1,1,0.75,0.75,0.75,1.5,0] #new addition 7/22 
     pa = 0.2 #the percent of nests(solutions) that are replaced per step 
-    nests = [[0 for i in range(7)] for i in range(32)]
-    nests[0] = [1, 7, 9, 2000, 1.5, 12, 0]
-    nests[1] = [1, 7, 9, 2000, 1.5, 30, 0]
-    nests[2] = [1, 7, 9, 2000, 2.5, 12, 0]
-    nests[3] = [1, 7, 9, 2000, 2.5, 30, 0]
-    nests[4] = [1, 7, 9, 2000, 3, 6, 0]
-    nests[5] = [1, 7, 9, 2000, 3, 12, 0]
-    nests[6] = [1, 7, 9, 2000, 3, 30, 0]
-    nests[7] = [1, 7, 9, 10000, 1.5, 6, 0]
-    nests[8] = [1, 7, 9, 10000, 1.5, 12, 0]
-    nests[9] = [1, 7, 9, 10000, 1.5, 30, 0]
-    nests[10] = [1, 7, 9, 10000, 2.5, 6, 0]
-    nests[11] = [1, 7, 9, 10000, 2.5, 12, 0]
-    nests[12] = [1, 7, 9, 10000, 2.5, 30, 0]
-    nests[13] = [1, 7, 9, 10000, 3, 6, 0]
-    nests[14] = [1, 7, 9, 10000, 3, 12, 0]
-    nests[15] = [1, 7, 9, 10000, 3, 30, 0]
-    nests[16] = [2, 7, 9, 2000, 1.5, 6, 0]
-    nests[17] = [2, 7, 9, 2000, 1.5, 12, 0]
-    nests[18] = [2, 7, 9, 2000, 1.5, 30, 0]
-    nests[19] = [2, 7, 9, 2000, 2.5, 30, 0]
-    nests[20] = [2, 7, 9, 2000, 3, 6, 0]
-    nests[21] = [2, 7, 9, 2000, 3, 12, 0]
-    nests[22] = [2, 7, 9, 2000, 3, 30, 0]
-    nests[23] = [2, 7, 9, 10000, 1.5, 6, 0]
-    nests[24] = [2, 7, 9, 10000, 1.5, 12, 0]
-    nests[25] = [2, 7, 9, 10000, 1.5, 30, 0]
-    nests[26] = [2, 7, 9, 10000, 2.5, 6, 0]
-    nests[27] = [2, 7, 9, 10000, 2.5, 12, 0]
-    nests[28] = [2, 7, 9, 10000, 2.5, 30, 0]
-    nests[29] = [2, 7, 9, 10000, 3, 6, 0]
-    nests[30] = [2, 7, 9, 10000, 3, 12, 0]
-    nests[31] = [2, 7, 9, 10000, 3, 30, 0]
+
+    nests = generate.generate([[1, 2], [7], [9], [2000, 10000], [1.5, 2.5, 3], [6, 12, 30]]) #put your settings here
 
     #Opens parallel processing 
     #Opens parallel processing
@@ -430,8 +400,20 @@ def initialize(Iterations, nest_number, settings):
 
     pool = multiprocessing.Pool() 
 
+    #Generate actual raingauge list 
+    actual = get_data.get_actual(settings[0], settings[1])
 
-    print '\n'*3 + '='*20 + ' INITIALIZING ' + '='*20 + '\n'
+    #Actual peak finding
+    #actual_maxes = moving_max.moving_max(actual)
+
+    print '\n'*3
+
+    print 'Actual maxes for ' + str(settings[0]) + ': ' 
+    print actual, '\n'
+    #print actual_maxes, '\n'
+
+
+    print '='*20 + ' INITIALIZING ' + '='*20 + '\n'
 
     #initiates number by parameters in the sort file 
     #Initates nest_number of solutions by randomly picking points in parameter space 
@@ -448,9 +430,10 @@ def initialize(Iterations, nest_number, settings):
     #    nests[i] = a_nest 
     
     start_time = time.time()
+  
 
     for i in range(nest_number):
-        get_fitness(nests[i],settings)
+        nests[i][6] = get_fitness(nests[i],settings)
 
     nests.sort(key=lambda x: x[6], reverse = True)
 
