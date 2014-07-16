@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
 #date and time to start forecast in YYYYMMDDHHNN format 
 #date_list = [201006100300] 
-date_list = 201204291000
+date_list = 201204282000
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls 
 #date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon 
@@ -134,32 +134,40 @@ def get_date():
     return date_list 
 def get_base_dir(): 
     return base_dir 
-  
+def get_save_dir(): 
+    return save_dir 
+def get_save_as():
+    return save_as
+
   
 #this block run when main.py is called directly from the terminal 
 if __name__ == "__main__": 
     import GS, psof, CuckooSearch_forSWIRLS_multi, sort_file  
   
     #multi-date optimization 
-    if average_type == 1: 
+    """if average_type == 1: 
         #runs desired optimization function 
         print '\n'*3 + 'Input date list: ' + str(date_list)
+        f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
         CuckooSearch_forSWIRLS_multi.initialize(iterations, 32, settings)
 
         while True:
-            CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, 32, settings)
+            f = open(save_dir + 'best/' + save_as + '_best','a')
+            f.write(str(settings[0]) + ' / ' + str(nests[0][:6]) + ' / ' +  str(nests[0][6])+ '\n')
+            f.close()
+            nests = CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, 32, settings)
 
         #outputs and saves results 
         print "parameters = " + str(dump[0]) 
         print "score = " + str(dump[1]) 
         parameters = dump[0] 
         score = dump[1] 
-        f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
+        f = open(save_dir + '/best/' + save_as + '_best','w') 
         f.write(repr(parameters) + ' ' +  str(score)) 
         f.close() 
 
         #creates file with top 100 distinct parameter sets 
-        sort_file.sort_file(save_dir, save_as) 
+        sort_file.sort_file(save_dir, save_as) """
   
   
     #single date optimization 
@@ -174,12 +182,17 @@ if __name__ == "__main__":
 
         #runs desired optimization 
         print '\n'*3 + 'Input date list: ' + str(date_list)
+
 	nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
+        #f = open(save_dir + 'best/' + save_as + '_best','w')
         
-        while True:  
-            print 'Main: (Before) ' + str(settings[0])
-	    CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, solution_number, settings) 
-            print 'Main: (After) ' + str(settings[0])
+        #print 'Main: (Before) ' + str(settings[0])
+        while True:
+            f = open(save_dir + 'best/' + save_as + '_best','a')
+            f.write(str(settings[0]) + ' / ' + str(nests[0][:6]) + ' / ' +  str(nests[0][6]) + '\n')
+            f.close()
+            nests = CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, 32, settings)
+        #print 'Main: (After) ' + str(settings[0])
 
         #outputs and saves results
 	print "parameters = " + str(dump[0]) 
@@ -187,7 +200,7 @@ if __name__ == "__main__":
         parameters = dump[0] 
         score = dump[1] 
         f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
-        f.write(repr(parameters) + ' ' +  str(score)) 
+        f.write(repr(parameters) + ' ' +  str(score) + '\n') 
         f.close() 
 
         #creates file with top 100 distinct parameter sets 
