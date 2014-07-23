@@ -387,7 +387,10 @@ def initialize(Iterations, nest_number, settings):
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
     Ub = [7,7,24,50000,9,60,1]  #upper bound to search domain. Same dimension of solutions 
     stepsize = [1,1,0.75,0.75,0.75,1.5,0] #new addition 7/22 
-    pa = 0.2 #the percent of nests(solutions) that are replaced per step 
+
+    nest_list = [[[0,0], [0], [0], [0, 0], [0, 0, 0], [0, 0, 0]] for i in range(100)]
+    nest_list[0] = [[1, 2], [7], [9], [2000, 10000], [1.5, 2.5, 3], [6, 12, 30]] #initial
+    nest_list[1] = [[2, 3], [7], [9], [2000, 10000], [2, 2.8, 3], [6, 30, 60]]
 
     nests = generate.generate([[1, 2], [7], [9], [2000, 10000], [1.5, 2.5, 3], [6, 12, 30]]) #put your settings here
 
@@ -434,6 +437,9 @@ def initialize(Iterations, nest_number, settings):
 
     for i in range(nest_number):
         nests[i][6] = get_fitness(nests[i],settings)
+	if i*100/(nest_number)/10 < (i+1)*100/(len(nests))/10:
+	    print str(i*100/(len(nests)))+ '% done'
+
 
     nests.sort(key=lambda x: x[6], reverse = True)
 
