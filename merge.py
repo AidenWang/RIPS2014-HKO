@@ -33,7 +33,7 @@ def merge(content1, content2):
     for i in range(len(merged_file)):
         merged_list[i][0] = int(merged_file[i].split(' / ')[0]) #extracting date info
         merged_list[i][1] = ast.literal_eval(merged_file[i].split(' / ')[1]) #extracting parameter info
-        merged_list[i][2] = float(merged_file[i].split(' / ')[2]) #extracting scores info
+        merged_list[i][2] = float(merged_file[i].split(' / ')[2])
    
     merged_list.sort(key=lambda x: (x[0] , x[1]))
 
