@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
 #date and time to start forecast in YYYYMMDDHHNN format 
 #date_list = [201006100300] 
-date_list = 201204282000
+date_list = 201403290030
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls 
 #date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon 
@@ -130,6 +130,9 @@ solution_number = 32
 settings = [date_list, base_dir, save_dir, save_as] 
 #accessors for prepare.py 
 #do not use accessors for any routines run in parallel! 
+
+initial_nests = []
+
 def get_date(): 
     return date_list 
 def get_base_dir(): 
@@ -138,7 +141,6 @@ def get_save_dir():
     return save_dir 
 def get_save_as():
     return save_as
-
   
 #this block run when main.py is called directly from the terminal 
 if __name__ == "__main__": 
@@ -184,6 +186,7 @@ if __name__ == "__main__":
         print '\n'*3 + 'Input date list: ' + str(date_list)
 
 	nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
+        initial_nests = nests
         #f = open(save_dir + 'best/' + save_as + '_best','w')
         
         #print 'Main: (Before) ' + str(settings[0])
@@ -205,3 +208,5 @@ if __name__ == "__main__":
 
         #creates file with top 100 distinct parameter sets 
         sort_file.sort_file(save_dir, save_as) 
+
+
