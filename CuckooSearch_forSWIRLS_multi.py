@@ -265,6 +265,9 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     import os 
     import exceptions 
     import string 
+    import main
+    import copy
+    
     #These are all changable parameters 
     nd = 7 #dimension of solutions 
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
@@ -288,7 +291,6 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     #Opens parallel processing 
     #N_inter = 0
 
-    
     change_settings(settings)
     print '\n'*3 
 
@@ -302,24 +304,17 @@ def cuckoo_search(nests, Iterations, nest_number, settings):
     print actual, '\n'
     #print actual_maxes, '\n'
 
-    nests_copy = nests
-
     #only do Levy flights if the rainfall amount is of importance
     if sum(actual)/len(actual) > 2:
         nests = replace_nests(nests, get_new_nests(nests, Lb, Ub, nest_number, stepsize, pa), settings)
-        nests_copy = nests
+
     else:
-        nests = nests_copy
         print "No tuning involved! Reusing the old nests: \n"
         start_time = time.time()
 
         for i in range(nest_number):
-            nests[i][6] = get_fitness(nests[i],settings)
-            if i*100/(len(nests))/10 < (i+1)*100/(len(nests))/10:
-	        print str(i*100/(len(nests)))+ '% done'
+            nests[i][6] = 0.0
         print '\n'
-
-        nests.sort(key=lambda x: x[6], reverse = True)
 
         for i in range(nest_number):
             print ' '*(3-len(str(i+1))), str(i+1) , '   ' , str(nests[i])
@@ -382,6 +377,7 @@ def initialize(Iterations, nest_number, settings):
     import string 
     import generate
     import get_data
+    
     #These are all changable parameters 
     nd = 7 #dimension of solutions 
     Lb = [0,0,1,1,1,6,0]  #lower bound to search domain. Same dimension of solutions 
@@ -439,6 +435,8 @@ def initialize(Iterations, nest_number, settings):
         nests[i][6] = get_fitness(nests[i],settings)
 	if i*100/(nest_number)/10 < (i+1)*100/(len(nests))/10:
 	    print str(i*100/(len(nests)))+ '% done'
+
+
 
 
     nests.sort(key=lambda x: x[6], reverse = True)
