@@ -91,6 +91,7 @@ def prepare_actual(input_list):
 
 
 def get_actual(intime, base_dir):
+    import glob
     # Parses actual data to list
     # parses input
     timestr = str(intime)
@@ -99,6 +100,7 @@ def get_actual(intime, base_dir):
     startdatetime = datetime.datetime(yy,mm,dd,hh,nn)
     # list for holding actual raingauge data
     raingauge = []
+
     for t in range(0, 360, 5):
         # figures out time info for temptime
         tempdatetime = startdatetime + datetime.timedelta(0,0,0,0,t)
@@ -113,8 +115,16 @@ def get_actual(intime, base_dir):
             "irregular/gauge_rf/hk/rf60m_qced/rank14p"
         os.chdir(raingaugepath)
         titleline = 1
-        ##print raingaugepath
-        raingaugefile = open("rank14p_" + temptimestr)
+
+        test_temptimestr = glob.glob("rank14p_*") 
+
+        if "rank14p_" + temptimestr in test_temptimestr:
+            raingaugefile = open("rank14p_" + temptimestr)
+        else: 
+            tempdatetime2 = startdatetime + datetime.timedelta(0,0,0,0,t-5)
+            temptuple2 = tempdatetime2.timetuple()
+            temptimestr2 = time.strftime("%Y%m%d%H%M", temptuple2)
+            raingaugefile = open("rank14p_" + temptimestr2)
         for line in raingaugefile:
             if titleline == 1:
                 titleline = 0
