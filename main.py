@@ -1,138 +1,66 @@
-"""#date and time to start forecast in YYYYMMDDHHNN format
-date_list = [201006100300] 
-#date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls
-#date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon
-#date_list = [201005070400, 200904250800, 200903240700, 201104171530, 
-#    201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #combined
-#swirls2 directory (eg /home/swirls/operation/swirls2/)
-#base_dir = '/home/swirls/operation/swirls2/'
-base_dir = '/home/swirls/rnd/swirls-rips/'
-#directory to save files
-#save_dir = base_dir + '/APTT/'
-save_dir = '/home/swirls/rnd/APTT/'
-#saves files as save_as_weight_type
-save_as = 'scores.txt'
 
-#optimization algorithm to be used.
-#1-cuckoo search (default)
-#2-particle swarm optimization
-#3-genetic algorithm
-optimization_type = 1
-#optimize ave over all dates or each date separately?
-#1-multi date, optimize average score for all dates
-#2-single date, optimize each date separately
-average_type = 2
-#number of iterations to run optimization for
-#defults: cuckoo-100, PSO-50, GA-100
-iterations = 3
-#number of candidate solutions held.
-#should be a multiple of the number of processors used
-#defaults: cuckoo-25, PSO-200, GA-200
-solution_number = 2
+############################################################################ 
+                                  #Main.py
+                     #Choose a date and optimization method
+               #Calls Cowbird, Firefly, or CPSO Firefly Algorithms
 
-#list of settings to be  passed
-settings = [date_list, base_dir, save_dir, save_as]
-#accessors for prepare.py
-#do not use accessors for any routines run in parallel!
-def get_date():
-    return date_list
-def get_base_dir():
-    return base_dir
+############################################################################
 
 
-#this block run when main.py is called directly from the terminal
-if __name__ == "__main__":
-    import GS, psof, CuckooSearch_forSWIRLS_multi, sort_file 
 
-    #multi-date optimization
-    if average_type == 1:
-        #runs desired optimization function
-        if optimization_type == 1:
-            dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings)
-        if optimization_type == 2:
-            dump = psof.pso(iterations, solution_number, settings)
-        if optimization_type == 3:
-            dump = GS.imp_GS(iterations, solution_number, settings)
-        #outputs and saves results
-        print "parameters = " + str(dump[0])
-        print "score = " + str(dump[1])
-        parameters = dump[0]
-        score = dump[1]
-        f = open(base_dir + '/data/APTT/' + save_as + '_best','w')
-        f.write(repr(parameters) + ' ' +  str(score))
-        f.close()
-        #creates file with top 100 distinct parameter sets
-        sort_file.sort_file(save_dir, save_as)
-
-
-    #single date optimization
-    if average_type == 2:
-        #stores original save_as name
-        original_save_as = save_as
-        for date in date_list:
-            #appends the date to the end of original save_as name
-            save_as = original_save_as + str(date)
-            #changes the settings passed to get_score to only include a single date
-            settings = [[date], base_dir, save_dir, save_as]
-            #runs desired optimization
-            if optimization_type == 1:
-                dump = CuckooSearch_forSWIRLS_multi.cuckoo_search(iterations, solution_number, settings)
-            if optimization_type == 2:
-                dump = psof.pso(iterations, solution_number, settings)
-            if optimization_type == 3:
-                dump = GS.imp_GS(iterations, solution_number, settings)
-            #outputs and saves results
-            print "parameters = " + str(dump[0])
-            print "score = " + str(dump[1])
-            parameters = dump[0]
-            score = dump[1]
-            f = open(base_dir + '/data/APTT/' + save_as + '_best','w')
-            f.write(repr(parameters) + ' ' +  str(score))
-            f.close()
-            #creates file with top 100 distinct parameter sets
-            sort_file.sort_file(save_dir, save_as)
-"""
-
-#date and time to start forecast in YYYYMMDDHHNN format 
-#date_list = [201006100300] 
-date_list = 201403290030
+#Date and time to start forecast in YYYYMMDDHHNN format 
+#date_list = [200806070500, 200906110800, 201006100300, 201007281300, \
+             #201204290100]
+#end_list = [200806071300, 200906111600, 201006101100, 201007282100, \
+            #201204290900]
+date_list = [200906110800, 201006100300, 201007281300]
+end_list = [200906111600, 201006101100, 201007282100]
+#Additional date lists
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530]  
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530] #squalls 
-#date_list = [201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #monsoon 
+#date_list = [201006100300, 200906110600, 200806070300, 200806061100, \n
+             #201007281300, 201105221000] #monsoon 
 #date_list = [201005070400, 200904250800, 200903240700, 201104171530,  
-#    201006100300, 200906110600, 200806070300, 200806061100, 201007281300, 201105221000] #combined 
-#swirls2 directory (eg /home/swirls/operation/swirls2/) 
+             #201006100300, 200906110600, 200806070300, 200806061100, \n
+             #201007281300, 201105221000] #combined 
+
+#SWIRLS directory (eg /home/swirls/operation/swirls2/) 
 base_dir = '/home/swirls/rnd/swirls-rips/'
-#directory to save files 
+
+#Directory to save files 
 #save_dir = base_dir + '/APTT/' 
 save_dir = '/home/swirls/rnd/APTT/'
-#saves files as save_as_weight_type 
+#Saves files as save_as_weight_type 
 save_as = 'scores.txt'
   
-#optimization algorithm to be used. 
-#1-cuckoo search (default) 
-#2-particle swarm optimization 
-#3-genetic algorithm 
-optimization_type = 1
-#optimize ave over all dates or each date separately? 
-#1-multi date, optimize average score for all dates 
-#2-single date, optimize each date separately 
-average_type = 2
-#number of iterations to run optimization for 
-#defaults: cuckoo-100, PSO-50, GA-100 
-iterations = 10
-#number of candidate solutions held. 
-#should be a multiple of the number of processors used 
-#defaults: cuckoo-25, PSO-200, GA-200 
+#Optimization algorithm choices 
+#1-Cowbird
+#2-Firefly 
+
+#Set to Cowbird
+optimization_type = 1 
+
+#Set single date
+algorithm_type = 2
+
+#Number of iterations to run optimization for 
+iterations = 1
+
+#Number of candidate solutions held (number of parameter sets)
+#Note: Should be a multiple of the number of processors used 
 solution_number = 32
-  
-#list of settings to be  passed 
+
+#Vector keeps track of initialization time
+timing = []
+
+#Tracks how many tuning runs have occured
+runs = 0
+
+#List of settings to be  passed 
 settings = [date_list, base_dir, save_dir, save_as] 
-#accessors for prepare.py 
-#do not use accessors for any routines run in parallel! 
 
-initial_nests = []
-
+#Accessors for prepare.py 
+#Do not use accessors for any routines run in parallel! 
 def get_date(): 
     return date_list 
 def get_base_dir(): 
@@ -141,72 +69,80 @@ def get_save_dir():
     return save_dir 
 def get_save_as():
     return save_as
-  
-#this block run when main.py is called directly from the terminal 
+
+#This block run when main.py is called directly from the terminal
 if __name__ == "__main__": 
-    import GS, psof, CuckooSearch_forSWIRLS_multi, sort_file  
-  
-    #multi-date optimization 
-    """if average_type == 1: 
-        #runs desired optimization function 
-        print '\n'*3 + 'Input date list: ' + str(date_list)
-        f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
-        CuckooSearch_forSWIRLS_multi.initialize(iterations, 32, settings)
+    import GS, psof, sort_file, time
+    import Cowbird
 
-        while True:
-            f = open(save_dir + 'best/' + save_as + '_best','a')
-            f.write(str(settings[0]) + ' / ' + str(nests[0][:6]) + ' / ' +  str(nests[0][6])+ '\n')
-            f.close()
-            nests = CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, 32, settings)
+    #Run if Cowbird chosen as the preferred algorithm
+    if optimization_type == 1:
 
-        #outputs and saves results 
-        print "parameters = " + str(dump[0]) 
-        print "score = " + str(dump[1]) 
-        parameters = dump[0] 
-        score = dump[1] 
-        f = open(save_dir + '/best/' + save_as + '_best','w') 
-        f.write(repr(parameters) + ' ' +  str(score)) 
-        f.close() 
+          #Run Grasshopper for all listed dates
+          for i in range(len(date_list)):
+               print i, 'at the beginning'
+               end_list[i], 'at the beginning'
 
-        #creates file with top 100 distinct parameter sets 
-        sort_file.sort_file(save_dir, save_as) """
-  
-  
-    #single date optimization 
-    if average_type == 2: 
-        #stores original save_as name 
-        original_save_as = save_as 
-        #for date in date_list: 
-        #appends the date to the end of original save_as name 
-        save_as = original_save_as + str(date_list) 
-        #changes the settings passed to get_score to only include a single date 
-        settings = [date_list, base_dir, save_dir, save_as] 
+               #Stores original save_as name 
+               original_save_as = save_as 
 
-        #runs desired optimization 
-        print '\n'*3 + 'Input date list: ' + str(date_list)
+               #For date in date_list: 
+               #Appends the date to the end of original save_as name 
+               save_as = original_save_as + str(date_list[i]) 
 
-	nests = CuckooSearch_forSWIRLS_multi.initialize(iterations, solution_number, settings)
-        initial_nests = nests
-        #f = open(save_dir + 'best/' + save_as + '_best','w')
-        
-        #print 'Main: (Before) ' + str(settings[0])
-        while True:
-            f = open(save_dir + 'best/' + save_as + '_best','a')
-            f.write(str(settings[0]) + ' / ' + str(nests[0][:6]) + ' / ' +  str(nests[0][6]) + '\n')
-            f.close()
-            nests = CuckooSearch_forSWIRLS_multi.cuckoo_search(nests, iterations, 32, settings)
-        #print 'Main: (After) ' + str(settings[0])
+               #Changes the settings passed to get_score to only include a 
+               #single date 
+               settings = [date_list[i], base_dir, save_dir, save_as] 
 
-        #outputs and saves results
-	print "parameters = " + str(dump[0]) 
-        print "score = " + str(dump[1]) 
-        parameters = dump[0] 
-        score = dump[1] 
-        f = open(base_dir + '/data/APTT/' + save_as + '_best','w') 
-        f.write(repr(parameters) + ' ' +  str(score) + '\n') 
-        f.close() 
+               #Runs desired optimization 
+               print '\n'*3 + 'Input date list: ' + str(date_list)
 
-        #creates file with top 100 distinct parameter sets 
-        sort_file.sort_file(save_dir, save_as) 
+               #Begin timing initialization and add to vector "timing"
+               timing.append(time.time())
+       
+               #Initialize the 32 parameter sets
+	       nests = Cowbird.initialize(iterations, solution_number, settings)
+
+               #End timing initialization and add to vector "timing"
+               timing.append(time.time())
+
+               #Take the begin and end times out of the "timing" vector to 
+               #more easily be sent to the tuning run code
+               firsttime = timing[-2]
+               secondtime = timing[-1]
+
+               
+               tempdate = settings[0]
+               print i, 'before while'
+                    
+                    #While the date is before the specified end time, run the program
+               while int(tempdate)<int(end_list[i]): 
+                    f = open(save_dir + 'best/' + save_as + '_best','a')
+                    f.write(str(settings[0]) + ' / ' + str(nests[0][:6]) + ' / ' +  str(nests[0][6]) + '\n')
+                    f.close()
+
+                    g = open(save_dir + save_as + '_average','a')
+                    g.write(str(settings[0]) + ' / Average: ' +  sum(nests[:][6])/float(len(nests[:][6]) + '\n')
+                    g.close()
+
+                    print i, 'inside while'
+                    print end_list[i], 'end_list inside '
+                    print 'Main: (Before) ' + str(settings[0])
+
+                         #Run Grasshopper for one tuning run
+	            nests = Cowbird.cowbird_search(nests, iterations, solution_number, settings, firsttime, secondtime)        
+                    print 'Main: (After) ' + str(settings[0])
+                    print i, 'at the end'
+                    print settings[0]
+                    print end_list[i]
+
+                         #Update the temporary time
+                    tempdate = settings[0]
+                    print tempdate, 'tempdate'
+                    
+
+
+    if optimization_type == 2:
+          print 'optimization 2'
 
 
