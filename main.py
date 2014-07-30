@@ -122,7 +122,8 @@ if __name__ == "__main__":
                     f.close()
 
                     g = open(save_dir + save_as + '_average','a')
-                    g.write(str(settings[0]) + ' / Average: ' +  sum(nests[:][6])/float(len(nests[:][6]) + '\n')
+                    
+                    g.write(str(settings[0]) + ' / Average: ' +  sum(nests[:][6])/float(len(nests[:][6])) + '\n')
                     g.close()
 
                     print i, 'inside while'
