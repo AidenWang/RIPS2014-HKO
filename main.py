@@ -73,7 +73,7 @@ def get_save_as():
 #This block run when main.py is called directly from the terminal
 if __name__ == "__main__": 
     import GS, psof, sort_file, time
-    import Cowbird
+    import Cowbird, numpy
 
     #Run if Cowbird chosen as the preferred algorithm
     if optimization_type == 1:
