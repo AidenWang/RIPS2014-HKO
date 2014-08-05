@@ -164,14 +164,13 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
         scoreLS += abs(forecast[x]-actual_interp[x])**2
         normalize += actual_interp[x]**2
     #normalizes by overall squared intensity. now in 0<=SLS<=1, but 1 is bad.
-    if normalize != 0:
-    	scoreLS /= normalize
+    scoreLS /= normalize
     #reverses so 1 is good
     scoreLS = 1 - scoreLS
     #floors at 0
     if scoreLS < 0:
         scoreLS = 0
-        
+
     scoreT = 0; scoreR = 0; scoreB = 0; normalize = 0
     #Scores each peak, weights by intensity of actual peak
     for k in range(len(peaksA)):
@@ -180,10 +179,10 @@ def score_forecast(forecast, peaksF, timesF, actual, peaksA, timesA, weight_sche
         if matchedpeaksF[k] != 0:
             scoreT = scoreT_peak(epsilonT[k], peaksA[k], weight_scheme)
             scoreR += scoreR_peak(epsilonR[k], peaksA[k], weight_scheme)
-            scoreB += scoreB_peak(epsilonT[k], epsilonR[k], peaksA[k], weight_scheme)
+            scor
     #normalizes by actual peak intensity
     if normalize != 0:
-	scoreT /= normalize; scoreR /= normalize; scoreB /= normalize
+        scoreT /= normalize; scoreR /= normalize; scoreB /= normalize
     #Computes total score
     score = wT*scoreT + wR*scoreR + wB*scoreB + wLS*scoreLS
 	
