@@ -11,21 +11,30 @@ import ast
 import glob
 import main
 
-#input two or more dates that you want to merge
-#for someotherfilename, type 'someotherfilename'
+##############################       Your input       ################################
 
-#obtain all files with the format 'scores*_best' to merge
+#input your merge_input
+#option(1): obtain all files with the format 'scores*_best' to merge
+#option(2): input two or more dates that you want to merge
+
+#option(1):      (if you choose option(2), comment out all codes here)
 merge_input = glob.glob(main.get_save_dir() + 'best/' + 'scores*_best') 
-#specify output file name
-merge_output = 'output.txt'
-
 #takes only the file name instead of the full path
 for i in range(len(merge_input)):
     merge_input[i] = merge_input[i].split('/')[-1]
 
-#if you want to merge with your current output
+#option(2):      (if you choose option(1), comment out all codes here)
+"""merge_input = ['scores.txt200806070500_best', 'scores.txt200906110800_best', 'scores.txt201006100300_best']"""
+
+#specify output file name
+merge_output = 'output.txt'
+
+#merges with your current output filename
 #Note: will give an error if merge_output does not exist yet
-merge_input.append(merge_output) #comment this line out if you do not want to
+merge_input.append(merge_output) 
+
+
+########################################################################################
 
 f = [0]*len(merge_input)
 content = [0]*len(merge_input)
